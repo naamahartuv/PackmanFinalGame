@@ -19,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -31,6 +32,7 @@ import Coords.MyCoords;
 import File_format.CSV2elements;
 import File_format.CSVWriter;
 import Geom.Point3D;
+import Robot.Play;
 import TheGame.Block;
 import TheGame.Fruit;
 import TheGame.Game;
@@ -54,16 +56,100 @@ import java.awt.event.ActionEvent;
 public class MyFrame extends JFrame implements MouseListener, MenuListener, ActionListener {
 
 
-	private BufferedImage strawberry, packmanImage, ghost, playerImage;
+	public class DrawFrame extends JPanel{
+
+		private BufferedImage strawberry, packmanImage, ghost, playerImage;
+		//	private Map map2;
+
+		public DrawFrame() {
+			map2 = new Map( "Ariel1.png");
+
+			try {
+				strawberry = ImageIO.read(new File("strawberry.png"));
+				packmanImage = ImageIO.read(new File("player.png"));
+				ghost = ImageIO.read(new File("ghost.png"));
+				playerImage = ImageIO.read(new File("pacman.png"));
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		/**
+		 * displays on the screen the whole game 
+		 * @param g - the event
+		 */
+
+		public void paint(Graphics g){
+			g.drawImage(map2.getMap(), 0, 0, getWidth(), getHeight(), this);
+
+
+
+			if(game.getPackmanList() != null)  {
+				for(Packman p : game.getPackmanList()) {
+					Point3D temp = map2.GPS2Pixel(p.getPoint3D(), getWidth(), getHeight());
+
+					g.drawImage(packmanImage,(int)temp.x(), (int)temp.y(), 25, 30, this);
+
+				}		
+			}
+
+			if(game.getFruitList() != null) {
+				for(Fruit f : game.getFruitList()) {
+					Point3D temp = map2.GPS2Pixel(f.getPoint3D(), getWidth(), getHeight());
+
+					g.drawImage(strawberry,(int)temp.x(), (int)temp.y(), 15, 20, this);
+				} 
+			}
+
+			if(game.getGhostList() != null)  {
+				for(Ghost gh : game.getGhostList()) {
+					Point3D temp = map2.GPS2Pixel(gh.getPoint(), getWidth(), getHeight());
+
+					g.drawImage(ghost,(int)temp.x(), (int)temp.y(), 27, 31, this);
+
+				}		
+			}
+
+			if(game.getBlockList() != null)  {
+				for(Block b : game.getBlockList()) {
+					Point3D startTemp = map2.GPS2Pixel(b.getPointStart(), getWidth(), getHeight());
+					Point3D endTemp = map2.GPS2Pixel(b.getPointEnd(), getWidth(), getHeight());
+					int width = (int)(endTemp.x() - startTemp.x());
+					int height = (int)(startTemp.y() - endTemp.y());
+					g.fillRect((int)startTemp.x(), (int)endTemp.y(), width, height);
+
+				}		
+			}
+
+			if(game.getPlayer() != null) {
+				if(game.getPlayer().getPoint().ix() + 1 != 0) {//.................
+					Point3D temp = map2.GPS2Pixel(game.getPlayer().getPoint(), getWidth(), getHeight());
+					g.drawImage(playerImage, (int)temp.x(), (int)temp.y(), 25, 33, this);
+				}
+			}
+
+			if(type == 3) {
+				play.rotate(angle);
+			}
+
+
+		}
+	}
+
+
 	private JMenuBar menuBar;
 	private JMenu fileMenu, typeMenu;
 	private JMenuItem save, load, clear, exit, export, packman, fruit, run, player;
 	private Game game;
-	private ArrayList<BufferedImage> imageList = new ArrayList<BufferedImage>();
-	private int type, ID = 0;
-	private Map map ;
+	//private ArrayList<BufferedImage> imageList = new ArrayList<BufferedImage>();
+	private int type;
+	private Map map2 ;
 	private CSVWriter csvWriter;
-	//	private ShortestPathAlgo algo;
+	private Play play;
+	private double angle;
+	private DrawFrame draw;
 
 
 	/**
@@ -85,7 +171,10 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		map = new Map( "Ariel1.png");
+
+		draw = new DrawFrame();
+		add(draw);
+
 		game = new Game();
 		csvWriter = new CSVWriter(game);
 		menuBar = new JMenuBar();
@@ -113,8 +202,6 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 
 		typeMenu = new JMenu("Play");
-		packman = new JMenuItem("Packman");
-		fruit = new JMenuItem("Fruit");
 		player = new JMenuItem("Player");
 		run = new JMenuItem("Run");
 
@@ -122,21 +209,11 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 		menuBar.add(typeMenu);
 		setJMenuBar(menuBar);
-		typeMenu.add(packman);
-		typeMenu.add(fruit);
 		typeMenu.add(player);
 		typeMenu.add(run);
 
-		try {
-			strawberry = ImageIO.read(new File("strawberry.png"));
-			packmanImage = ImageIO.read(new File("player.png"));
-			ghost = ImageIO.read(new File("ghost.png"));
-			playerImage = ImageIO.read(new File("pacman.png"));
 
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
 		player.addActionListener(new ActionListener() {
 
@@ -146,29 +223,13 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			}
 		});
 
-		fruit.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				type = 1;
-			}
-		});
-
-		packman.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				type = 2;
-			}
-		});
 
 		run.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				add(e);
+				runGame();
 			}
-
 		});
 
 		load.addActionListener(new ActionListener() {
@@ -176,6 +237,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				loadFile();
+
 			}
 		});
 
@@ -196,7 +258,6 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 				game.getGhostList().clear();
 				game.getPlayer().setPoint(new Point3D(0,0));
 				repaint();
-				ID = 0;
 			}
 		});
 
@@ -223,100 +284,34 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		setJMenuBar(menuBar);
 	}
 
+
+
 	/**
 	 * operates the algorithm 
 	 * @param e - the event
 	 */
 
-	public void  add(ActionEvent e) {
+	public void  runGame() { 
 		type = 3;
-		//		algo = new ShortestPathAlgo(game);
-		//		algo.ShortestPath();
+		play.start();
+		Thread thread = new Thread() {
+			public void run(){
+				while(play.isRuning()) {
+					game.update(play);
+					try {
+						this.sleep(50);
+						repaint();
 
-		repaint();
-
-		for (Packman P : game.getPackmanList()) {
-			PackmanThread thread = new PackmanThread(P,this);
-
-			thread.start();
-
-		}
-	}
-
-	/**
-	 * displays on the screen the whole game 
-	 * @param g - the event
-	 */
-
-	public void paint(Graphics g){
-		g.drawImage(map.getMap(), 0, 0, getWidth() - 8, getHeight() - 8, this);
-		setJMenuBar(menuBar);
-
-
-		if(game.getPackmanList() != null)  {
-			for(Packman p : game.getPackmanList()) {
-				Point3D temp = map.GPS2Pixel(p.getPoint3D(), getWidth(), getHeight());
-
-				g.drawImage(packmanImage,(int)temp.x(), (int)temp.y(), 25, 30, this);
-
-			}		
-		}
-
-		if(game.getFruitList() != null) {
-			for(Fruit f : game.getFruitList()) {
-				Point3D temp = map.GPS2Pixel(f.getPoint3D(), getWidth(), getHeight());
-
-				g.drawImage(strawberry,(int)temp.x(), (int)temp.y(), 15, 20, this);
-			} 
-		}
-
-		if(game.getGhostList() != null)  {
-			for(Ghost gh : game.getGhostList()) {
-				Point3D temp = map.GPS2Pixel(gh.getPoint(), getWidth(), getHeight());
-
-				g.drawImage(ghost,(int)temp.x(), (int)temp.y(), 27, 31, this);
-
-			}		
-		}
-
-		if(game.getBlockList() != null)  {
-			for(Block b : game.getBlockList()) {
-				Point3D startTemp = map.GPS2Pixel(b.getPointStart(), getWidth(), getHeight());
-				Point3D endTemp = map.GPS2Pixel(b.getPointEnd(), getWidth(), getHeight());
-				int width = (int)(endTemp.x() - startTemp.x());
-				int height = (int)(startTemp.y() - endTemp.y());
-				g.fillRect((int)startTemp.x(), (int)endTemp.y(), width, height);
-
-			}		
-		}
-
-		if(game.getPlayer() != null) {
-			if(game.getPlayer().getPoint().ix() + 1 != 0) {//.................
-				Point3D temp = map.GPS2Pixel(game.getPlayer().getPoint(), getWidth(), getHeight());
-				g.drawImage(playerImage, (int)temp.x(), (int)temp.y(), 34, 34, this);
-			}
-		}
-		if(type == 3) {
-			for(Packman p : game.getPackmanList()) {
-				Point3D right1 = p.getPoint3D();
-				Point3D right = map.GPS2Pixel(p.getPackmanRoad().get(0).getPoint3D(), getWidth(), getHeight());
-				for(Fruit f: p.getPackmanRoad()) {
-
-					Point3D left = map.GPS2Pixel(f.getPoint3D(), getWidth(), getHeight());
-
-					Graphics2D g2 = (Graphics2D) g;
-					g.setColor(Color.PINK);
-					g2.setStroke(new BasicStroke(4));
-					g2.drawLine((int)right.x(),(int) right.y(),
-							(int)left.x(), (int)left.y());
-					right = map.GPS2Pixel(f.getPoint3D(), getWidth(), getHeight());
-
-
+					} catch (InterruptedException e1) {
+						e1.printStackTrace();
+					}	
 				}
-				p.setPoint3D(right1);
 			}
-		}
+		};
+		thread.start();
 	}
+
+	
 
 
 	/**
@@ -335,29 +330,19 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 	@Override
 	public void mouseClicked(MouseEvent arg) {
 
-		if(type == 1) {
-			Point3D newPoint = map.pixel2GPS(new Point3D(arg.getX(), arg.getY() ), getWidth(), getHeight());
-			Fruit newFruit = new Fruit(newPoint, ID);
-			game.getFruitList().add(newFruit);
-			repaint();
-			ID++;
+
+		if(type == 3) {		
+			Point3D point = new Point3D(map2.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight()));
+			MyCoords c = new MyCoords(0, 0, 0);
+			angle = c.azimuth_elevation_dist( game.getPlayer().getPoint(),point)[0];
+
 		}
-
-		if(type == 2) {
-			Point3D newPoint = map.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight());
-			Packman newPackman = new Packman(newPoint,1,1, ID);
-			game.getPackmanList().add(newPackman);
-			repaint();
-			ID++;
-		}
-
-
-
 
 		if(type == 4) {
-			Point3D newPoint = map.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight());
-
+			Point3D newPoint = map2.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight());
 			game.getPlayer().setPoint(newPoint);
+			play.setInitLocation(newPoint.x(), newPoint.y());
+
 			repaint();
 		}
 
@@ -409,8 +394,11 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			FileReader fileReader = new FileReader(dir + fileName);
 			BufferedReader bReader = new BufferedReader(fileReader);
 
-			CSV2elements c = new CSV2elements(dir + fileName, this.game);
+			play = new Play(dir + fileName);
+			play.setIDs(315745828, 313417420);
+			CSV2elements c = new CSV2elements(play, this.game);
 			this.game = c.getGame();
+			this.play = c.getPlay();
 
 			repaint();
 
@@ -480,8 +468,10 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 		MyFrame window = new MyFrame();
 		window.setVisible(true);
-		//window.setSize(1000, 550);
-			window.setSize(window.map.getMap().getWidth(),window.map.getMap().getHeight());
+		window.setSize(1000, 550);
+		//window.setSize(window.map.getMap().getWidth(),window.map.getMap().getHeight());
 	}
+
+
 
 }

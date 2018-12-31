@@ -2,6 +2,9 @@ package TheGame;
 
 import java.util.ArrayList;
 
+import File_format.CSV2elements;
+import Robot.Play;
+
 /**
  * keeps a collection of fruits and packmans
  * @author yael hava and naama hartuv
@@ -67,7 +70,16 @@ public class Game {
 		}
 	}
 
-
+	public void update(Play play) {
+		getPackmanList().clear();
+		getFruitList().clear();
+		getBlockList().clear();
+		getGhostList().clear();
+	
+		CSV2elements c = new CSV2elements(play, this);
+		
+	}
+	
 	public Player getPlayer() {
 		return player;
 	}
@@ -78,7 +90,7 @@ public class Game {
 		//		this.player.setPoint(newPlayer.getPoint());
 		//		this.player.setID(newPlayer.getID());
 		//		this.player.setRadius(newPlayer.getRadius());
-//		this.player.setSpeed(newPlayer.getSpeed());
+		//		this.player.setSpeed(newPlayer.getSpeed());
 
 	}
 
@@ -98,6 +110,8 @@ public class Game {
 	public ArrayList<Block> getBlockList() {
 		return blockList;
 	}
+
+
 
 
 }

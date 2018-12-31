@@ -47,7 +47,7 @@ public class Ex4_Main_ExampleOld {
 		play1.start(); // default max time is 100 seconds (1000*100 ms).
 		
 		// 7) "Play" as long as there are "fruits" and time
-		for(int i=0;i<10;i++) {
+		for(int i = 0; i < 10; i++) {
 			
 		// 7.1) this is the main command to the player (on the server side)
 			play1.rotate(36*i); 

@@ -23,7 +23,6 @@ import TheGame.Player;
 
 public class CSV2elements 
 {
-	private String path;
 	private Game game;
 	private Play play;
 
@@ -34,12 +33,12 @@ public class CSV2elements
 	 * @param game - the game
 	 */
 
-	public CSV2elements(String path, Game game) {
-		this.path = path;
+	public CSV2elements(Play play, Game game) {
 		this.game = game;
-		this.play = new Play(path);
+		this.play = play;
 		toElem(game, play);
 	}
+
 
 	/**
 	 * create an array list with elements and add any element to an array list
@@ -50,7 +49,7 @@ public class CSV2elements
 	public void toElem(Game game, Play play) {
 		ArrayList<String> temp = play.getBoard();
 		ArrayList<String[]> arr = new ArrayList<String[]>();
-		
+
 		for (int i = 0; i < temp.size(); i++) {
 			arr.add(temp.get(i).split(","));
 		}
@@ -71,7 +70,7 @@ public class CSV2elements
 			else if(arr.get(i)[0].equals("M")) {
 				Player player = new Player(arr.get(i));
 				game.setPlayer(player);
-			
+
 			}
 		}
 	}
@@ -94,19 +93,19 @@ public class CSV2elements
 	 * @param arr - the line
 	 * @return f - the fruit with the data and the coordinate
 	 */
-	
+
 	private Fruit toFruitElem(String arr[]) {
 		FruitMetaData data = new FruitMetaData(arr);
 		Point3D point = new Point3D(arr);
 		Fruit f = new Fruit(point, data);
 		return f;
 	}
-	
-	
+
+
 	public Ghost toGhostElem(String[] arr) {
 		return new Ghost(arr);
 	}
-	
+
 	public Block toBlockElem(String[] arr) {
 		return new Block(arr);
 	}
@@ -115,7 +114,10 @@ public class CSV2elements
 		return game;
 	}
 
-	
+	public Play getPlay() {
+		return play;
+	}
+
 }
 
 

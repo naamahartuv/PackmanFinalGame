@@ -117,7 +117,7 @@ public class Map {
 	 * @return the angel
 	 */
 		
-		public double pixelEngel (Point3D p1, Point3D p2) {
+		public double pixelAngle (Point3D p1, Point3D p2) {
 			Point3D p1GPS= pixel2GPS(p1, map.getWidth(), map.getHeight());
 			Point3D p2GPS= pixel2GPS(p2, map.getWidth(), map.getHeight());
 			MyCoords m= new MyCoords(0, 0, 0);

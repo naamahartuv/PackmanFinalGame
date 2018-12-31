@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class CSVreader {
 	
 	private String path;
-
+	
 	/**
 	 * constructor
 	 * @param path - the file locate
