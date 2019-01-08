@@ -9,5 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="C:/Users/yaelh/Desktop/jar/Ex4_v0.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/yaelh/Desktop/jar/mysql-connector-java-5.1.47.jar"/>
+	<classpathentry kind="lib" path="C:/Users/yaelh/Desktop/jar/Graph_v0.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

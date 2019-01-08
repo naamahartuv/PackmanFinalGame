@@ -28,6 +28,8 @@ import java.awt.FileDialog;
 import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
+
+import Algorithms.RunAlgo;
 import Coords.MyCoords;
 import File_format.CSV2elements;
 import File_format.CSVWriter;
@@ -64,7 +66,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		public DrawFrame() {
 			map2 = new Map( "Ariel1.png");
 
-			try {
+			try { 
 				strawberry = ImageIO.read(new File("strawberry.png"));
 				packmanImage = ImageIO.read(new File("player.png"));
 				ghost = ImageIO.read(new File("ghost.png"));
@@ -141,9 +143,8 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 	private JMenuBar menuBar;
 	private JMenu fileMenu, typeMenu;
-	private JMenuItem save, load, clear, exit, export, packman, fruit, run, player;
+	private JMenuItem save, load, clear, exit, export, run, player, runAlgo;
 	private Game game;
-	//private ArrayList<BufferedImage> imageList = new ArrayList<BufferedImage>();
 	private int type;
 	private Map map2 ;
 	private CSVWriter csvWriter;
@@ -204,6 +205,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		typeMenu = new JMenu("Play");
 		player = new JMenuItem("Player");
 		run = new JMenuItem("Run");
+		runAlgo = new JMenuItem("Run algorithms");
 
 
 
@@ -211,6 +213,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		setJMenuBar(menuBar);
 		typeMenu.add(player);
 		typeMenu.add(run);
+		typeMenu.add(runAlgo);
 
 
 
@@ -229,6 +232,19 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				runGame();
+			}
+		});
+		
+		runAlgo.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				type = 0;
+				while(game.getFruitList().size() != 0) {
+				RunAlgo algo = new RunAlgo(game);
+				algo.run(play);
+				repaint();
+				}
 			}
 		});
 
