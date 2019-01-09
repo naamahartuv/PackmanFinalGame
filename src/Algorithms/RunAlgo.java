@@ -30,12 +30,9 @@ public class RunAlgo {
 		GraphBlock blocks = new GraphBlock(game, lineList, pointList);
 		blocks.findPoints();
 		blocks.findLines();
-		System.out.println(blocks.getLineList().size());
-		System.out.println(blocks.getPointList().size());
-		blocks.filterPoints();
 	
-		
 			for (int i = 0; i < game.getFruitList().size(); i++) {
+			
 				String fruit = "fruit" + i;
 				Graph g = new Graph();
 
@@ -62,20 +59,21 @@ public class RunAlgo {
 					}
 
 					for (int k = 0; k < blocks.getPointList().size(); k++) {
+						
 						//create block-block line
 						Line blockLine = new Line(blocks.getPointList().get(j), blocks.getPointList().get(k));	
 						Edge blockEdge = new Edge(blockLine, g);		
 						if(blockEdge.isEdge(blocks.getLineList(), blockLine)) {		//check if it's an edge
 							//add the block edge to the graph
 							g.addEdge("" + k, "" + j,		
-									blocks.getPointList().get(j).distance2D(blocks.getPointList().get(k)));
+									blocks.getPointList().get(k).distance2D(blocks.getPointList().get(j)));
 						}
 					}
 
 					//create player-block line
-					Line playetLine = new Line(game.getPlayer().getPoint(), blocks.getPointList().get(j));
-					Edge playerEdge = new Edge(playetLine, g);
-					if(playerEdge.isEdge(blocks.getLineList(), playetLine)) {	//check if it's an edge
+					Line playerLine = new Line(game.getPlayer().getPoint(), blocks.getPointList().get(j));
+					Edge playerEdge = new Edge(playerLine, g);
+					if(playerEdge.isEdge(blocks.getLineList(), playerLine)) {	//check if it's an edge
 						//add the player edge to the graph
 						g.addEdge(player, "" + j, 
 								game.getPlayer().getPoint().distance2D(blocks.getPointList().get(j)));
@@ -89,16 +87,18 @@ public class RunAlgo {
 					//add the player-fruit edge to the graph
 					g.addEdge(player, fruit, 
 							game.getFruitList().get(i).getPoint3D().distance2D(game.getPlayer().getPoint()) );
-
+					
+				}
 					Graph_Algo.dijkstra(g, fruit);	//find the fastest road from the fruit to the packman 
 					Node roadNode = g.getNodeByName(player);
 					FastestRoad fastestRoad = new FastestRoad(game.getFruitList().get(i), roadNode);
 
 					roadPrio.add(fastestRoad);	
 
-				}
+				
 			}
-
+			
+	
 			//sets the player point to the fruit's with the fastest road point
 			game.getPlayer().setPoint(roadPrio.peek().getFruit().getPoint3D());	
 			//remove the fruit with the fastest road from the fruit's list

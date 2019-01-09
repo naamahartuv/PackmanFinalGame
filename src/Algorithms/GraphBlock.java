@@ -1,16 +1,19 @@
 package Algorithms;
 
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import Geom.Line;
 import Geom.Point3D;
 import TheGame.Block;
 import TheGame.Game;
+import TheGame.Map;
 
 public class GraphBlock {
 
 	private Game game;
 	private ArrayList<Point3D> pointList;
 	private ArrayList<Line> lineList;
+	private Map map;
 
 
 	public GraphBlock(Game game, ArrayList<Line> lineList, ArrayList<Point3D> pointList) {
@@ -44,18 +47,30 @@ public class GraphBlock {
 
 
 
-	public void filterPoints() {
-		for (int i = 0; i < pointList.size(); i++) {
-			for (int j = 0; j < game.getBlockList().size(); j++) {
-				if(pointList.get(i).x() > game.getBlockList().get(j).getPointStart().x() ||
-						pointList.get(i).x() < game.getBlockList().get(j).getPointEnd().x() ||
-						pointList.get(i).y() > game.getBlockList().get(j).getPointEnd().y() ||
-						pointList.get(i).y() < game.getBlockList().get(j).getPointStart().y()) {
-					pointList.remove(i);
-				}
-			}
-		}
-	}
+//	public void filterPoints() {
+//		ArrayList<Point3D> filterList = new ArrayList<Point3D>(pointList);
+//		for (int  i = filterList.size() - 1; i > 0; i++) {
+//			for (int j = 0; j <pointList.size() - 1; j++) {
+//				//				if(pointList.get(i).x() > game.getBlockList().get(j).getPointStart().x() &&
+//				//						pointList.get(i).x() < game.getBlockList().get(j).getPointEnd().x() &&
+//				//						pointList.get(i).y() > game.getBlockList().get(j).getPointEnd().y() &&
+//				//						pointList.get(i).y() < game.getBlockList().get(j).getPointStart().y()) {
+//				//					pointList.remove(i);
+//				//				}
+//				if(filterList.get(i).x() > pointList.get(j).x() &&
+//						filterList.get(i).x() < pointList.get(j+1).x() &&
+//						filterList.get(i).y() < pointList.get(j).y() && 
+//						filterList.get(i).y() > pointList.get(j+1).y() ){
+//					System.out.println("true");
+//					filterList.remove(i);
+//					break;
+//
+//				}
+//			}
+//
+//		}
+//
+//	}
 
 	public ArrayList<Point3D> getPointList() {
 		return pointList;
