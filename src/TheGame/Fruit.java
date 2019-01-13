@@ -1,5 +1,7 @@
 package TheGame;
 
+import java.util.ArrayList;
+
 import Geom.Point3D;
 
 /**
@@ -14,7 +16,14 @@ public class Fruit {
 	private int ID;
 	private double weight;
 
+	/**
+	 * constructor
+	 */
 
+	public Fruit() {
+	}
+	
+	
 	/**
 	 * constructor
 	 * @param point - the point
@@ -25,6 +34,10 @@ public class Fruit {
 		this.point3D = point;
 		this.data = data;
 
+	}
+	
+	public boolean isExist(ArrayList<Fruit> fruitList) {
+		return fruitList.contains(this);
 	}
 
 	/**

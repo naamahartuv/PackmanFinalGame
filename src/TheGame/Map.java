@@ -35,6 +35,9 @@ public class Map {
 		}
 	}
 
+	public Map() {
+	}
+
 	/**
 	 * calclulates the normal of a point
 	 * @param point the point we wants to normalize
@@ -58,7 +61,7 @@ public class Map {
 	 * @return - the coordinate of the point
 	 */
 
-	public Point3D pixel2GPS(Point3D current, int Xstart, int Ystart) {
+	public Point3D pixel2GPS(Point3D current, int Xstart, int Ystart) { 
 		Point3D temp =normalPoint(current, new Point3D(Xstart, Ystart), new Point3D(0, 0));
 		Point3D result = new Point3D(temp.x() * (Math.abs(startPoint.x() - endPoint.x())) + endPoint.x(),
 				temp.y() * (Math.abs(startPoint.y() - endPoint.y())) + endPoint.y());

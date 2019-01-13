@@ -51,24 +51,24 @@ public class Game {
 	 * @param o
 	 */
 
-	public void add(Object o) { //doesnt enter at all!!! no need- p f g b
-		if(o == packman) {
-			packmanList.add((Packman)o);
-		}
-		else if(o == fruit) {
-			fruitList.add((Fruit)o);
-		}
-		else if(o == ghost) {
-			ghostList.add((Ghost)o);
-		}
-		else if(o == block) {
-			blockList.add((Block) o);
-		}
-		else if(o == player) {
-			this.player = (Player)o;
-			System.out.println("hi");
-		}
-	}
+//	public void add(Object o) { //doesnt enter at all!!! no need- p f g b
+//		if(o == packman) {
+//			packmanList.add((Packman)o);
+//		}
+//		else if(o == fruit) {
+//			fruitList.add((Fruit)o);
+//		}
+//		else if(o == ghost) {
+//			ghostList.add((Ghost)o);
+//		}
+//		else if(o == block) {
+//			blockList.add((Block) o);
+//		}
+//		else if(o == player) {
+//			this.player = (Player)o;
+//			System.out.println("hi");
+//		}
+//	}
 
 	public void update(Play play) {
 		getPackmanList().clear();
@@ -111,7 +111,9 @@ public class Game {
 		return blockList;
 	}
 
-
+	public boolean isExist(Fruit fruit) {
+		return fruitList.contains(fruit);
+	}
 
 
 }

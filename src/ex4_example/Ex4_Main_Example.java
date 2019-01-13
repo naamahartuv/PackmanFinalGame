@@ -48,7 +48,9 @@ public class Ex4_Main_Example {
 		// 7) "Play" as long as there are "fruits" and time
 	//	for(int i=0;i<10;i++) {
 		int i=0;
-			while(play1.isRuning()) {
+			while(play1.isRuning())
+			
+			{
 				i++;
 		// 7.1) this is the main command to the player (on the server side)
 			play1.rotate(36*i); 

@@ -43,6 +43,8 @@ import TheGame.Map;
 import TheGame.Packman;
 import TheGame.Player;
 import Threads.PackmanThread;
+import Threads.RoadThread;
+import javafx.scene.shape.Box;
 
 import java.awt.event.ActionListener;
 
@@ -115,7 +117,9 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			}
 
 			if(game.getBlockList() != null)  {
-				for(Block b : game.getBlockList()) {
+			for (int i = 0; i < game.getBlockList().size(); i++) {
+				Block b = game.getBlockList().get(i);
+			//for(Block b : game.getBlockList()) {
 					Point3D startTemp = map2.GPS2Pixel(b.getPointStart(), getWidth(), getHeight());
 					Point3D endTemp = map2.GPS2Pixel(b.getPointEnd(), getWidth(), getHeight());
 					int width = (int)(endTemp.x() - startTemp.x());
@@ -205,7 +209,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		typeMenu = new JMenu("Play");
 		player = new JMenuItem("Player");
 		run = new JMenuItem("Run");
-		runAlgo = new JMenuItem("Run algorithms");
+		runAlgo = new JMenuItem("Run algorithm");
 
 
 
@@ -234,17 +238,12 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 				runGame();
 			}
 		});
-		
+
 		runAlgo.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				type = 0;
-				while(game.getFruitList().size() != 0) {
-				RunAlgo algo = new RunAlgo(game);
-				algo.run(play);
-				repaint();
-				}
+				runAlgoGame();
 			}
 		});
 
@@ -327,8 +326,21 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		thread.start();
 	}
 
-	
 
+	public void runAlgoGame() {
+		type = 0;
+		play.setInitLocation(game.getPlayer().getPoint().x(), game.getPlayer().getPoint().y());
+
+//RunAlgo algo = new RunAlgo(game);
+		play.start();
+		//while(game.getFruitList().size() != 0) {
+		//algo.run();	
+		
+		RoadThread thread = new RoadThread(play, game, draw);
+		thread.start();
+		//	}
+		play.stop();
+	}
 
 	/**
 	 * the synchronized between the packman threads
@@ -346,7 +358,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 	@Override
 	public void mouseClicked(MouseEvent arg) {
 
-
+		System.out.println(arg.getX()+", "+arg.getY());
 		if(type == 3) {		
 			Point3D point = new Point3D(map2.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight()));
 			MyCoords c = new MyCoords(0, 0, 0);
