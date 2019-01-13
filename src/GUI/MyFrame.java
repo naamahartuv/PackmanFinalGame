@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -35,6 +36,7 @@ import File_format.CSV2elements;
 import File_format.CSVWriter;
 import Geom.Point3D;
 import Robot.Play;
+import SQL.SQLTable;
 import TheGame.Block;
 import TheGame.Fruit;
 import TheGame.Game;
@@ -42,7 +44,6 @@ import TheGame.Ghost;
 import TheGame.Map;
 import TheGame.Packman;
 import TheGame.Player;
-import Threads.PackmanThread;
 import Threads.RoadThread;
 import javafx.scene.shape.Box;
 
@@ -91,7 +92,8 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 
 			if(game.getPackmanList() != null)  {
-				for(Packman p : game.getPackmanList()) {
+				for (int i = 0; i < game.getPackmanList().size(); i++) {
+					Packman p = game.getPackmanList().get(i);
 					Point3D temp = map2.GPS2Pixel(p.getPoint3D(), getWidth(), getHeight());
 
 					g.drawImage(packmanImage,(int)temp.x(), (int)temp.y(), 25, 30, this);
@@ -100,7 +102,8 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			}
 
 			if(game.getFruitList() != null) {
-				for(Fruit f : game.getFruitList()) {
+				for (int i = 0; i < game.getFruitList().size(); i++) {
+					Fruit f = game.getFruitList().get(i);
 					Point3D temp = map2.GPS2Pixel(f.getPoint3D(), getWidth(), getHeight());
 
 					g.drawImage(strawberry,(int)temp.x(), (int)temp.y(), 15, 20, this);
@@ -108,7 +111,8 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			}
 
 			if(game.getGhostList() != null)  {
-				for(Ghost gh : game.getGhostList()) {
+				for (int i = 0; i < game.getGhostList().size(); i++) {
+					Ghost gh = game.getGhostList().get(i);
 					Point3D temp = map2.GPS2Pixel(gh.getPoint(), getWidth(), getHeight());
 
 					g.drawImage(ghost,(int)temp.x(), (int)temp.y(), 27, 31, this);
@@ -119,7 +123,6 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			if(game.getBlockList() != null)  {
 			for (int i = 0; i < game.getBlockList().size(); i++) {
 				Block b = game.getBlockList().get(i);
-			//for(Block b : game.getBlockList()) {
 					Point3D startTemp = map2.GPS2Pixel(b.getPointStart(), getWidth(), getHeight());
 					Point3D endTemp = map2.GPS2Pixel(b.getPointEnd(), getWidth(), getHeight());
 					int width = (int)(endTemp.x() - startTemp.x());
@@ -147,7 +150,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 	private JMenuBar menuBar;
 	private JMenu fileMenu, typeMenu;
-	private JMenuItem save, load, clear, exit, export, run, player, runAlgo;
+	private JMenuItem save, load, clear, exit, export, run, player, runAlgo ,sql;
 	private Game game;
 	private int type;
 	private Map map2 ;
@@ -186,12 +189,13 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 
 		fileMenu = new JMenu("File"); 
-		save = new JMenuItem("Save");
 		load = new JMenuItem("Load");
+		sql = new JMenuItem("MySQL");
 		clear = new JMenuItem("Clear");
 		exit = new JMenuItem("Exit");
 		export = new JMenuItem("Export to KML");
-		save.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,  ActionEvent.CTRL_MASK));
+		
+		sql.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,  ActionEvent.CTRL_MASK));
 		load.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,  ActionEvent.CTRL_MASK));
 		clear.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,  ActionEvent.CTRL_MASK));
 		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,  ActionEvent.CTRL_MASK));
@@ -199,8 +203,8 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 
 		menuBar.add(fileMenu);
-		fileMenu.add(save);
 		fileMenu.add(load);
+		fileMenu.add(sql);
 		fileMenu.add(export);
 		fileMenu.add(clear);
 		fileMenu.add(exit);
@@ -256,11 +260,15 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			}
 		});
 
-		save.addActionListener(new ActionListener() {
+		sql.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				saveFile();
+				try {
+					new SQLTable();
+				} catch (ClassNotFoundException | SQLException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		clear.addActionListener(new ActionListener() {
@@ -308,6 +316,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 	public void  runGame() { 
 		type = 3;
+		play.setIDs(315745828, 313417420);
 		play.start();
 		Thread thread = new Thread() {
 			public void run(){
@@ -329,6 +338,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 	public void runAlgoGame() {
 		type = 0;
+		play.setIDs(315745828, 313417420, 123456);
 		play.setInitLocation(game.getPlayer().getPoint().x(), game.getPlayer().getPoint().y());
 
 //RunAlgo algo = new RunAlgo(game);
@@ -414,7 +424,6 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			BufferedReader bReader = new BufferedReader(fileReader);
 
 			play = new Play(dir + fileName);
-			play.setIDs(315745828, 313417420);
 			CSV2elements c = new CSV2elements(play, this.game);
 			this.game = c.getGame();
 			this.play = c.getPlay();
@@ -428,67 +437,15 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		}
 	}
 
-	/**
-	 * save file from the screen
-	 */
 
-	public void saveFile() {
-		//		try read from the file
-		FileDialog fileDialog = new FileDialog(this, "Save CSV file", FileDialog.SAVE);
-		fileDialog.setFile("*.csv");
-		fileDialog.setFilenameFilter(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith(".csv");
-			}
-		});
-		fileDialog.setVisible(true);
-		String dir = fileDialog.getDirectory();
-		String fileName = fileDialog.getFile();
-		try {
-			FileWriter fileWriter = new FileWriter(dir + fileName);
-			PrintWriter pWriter = new PrintWriter(fileWriter);
-			csvWriter.writeCSV(fileName, pWriter);
-			fileWriter.close();
-
-		} catch (IOException ex) {
-			System.out.print("Error writing file  " + ex);
-		}
-	}
-
-	/**
-	 * calculates the distance between 2 point between packman and fruit
-	 * @param packman - the packman
-	 * @return - an array list of points
-	 */
-
-	public ArrayList<Point3D> packmanSteps(Packman packman) {
-		ArrayList<Point3D> stepsList = new ArrayList<Point3D>();
-		for (int i = 0; i < packman.getPackmanRoad().size() - 1; i++) {
-			double stepSize = 0.5;
-			MyCoords coord = new MyCoords(0, 0, 0);
-			double dis = coord.distance3d(packman.getPackmanRoad().get(i).getPoint3D(), 
-					packman.getPackmanRoad().get(i + 1).getPoint3D());
-			double x = (stepSize/dis) * ( packman.getPackmanRoad().get(i + 1).getPoint3D().x() -
-					packman.getPackmanRoad().get(i).getPoint3D().x())+
-					packman.getPackmanRoad().get(i + 1).getPoint3D().x();
-			double y = (stepSize/dis) * ( packman.getPackmanRoad().get(i + 1).getPoint3D().y() -
-					packman.getPackmanRoad().get(i).getPoint3D().y()) +
-					packman.getPackmanRoad().get(i + 1).getPoint3D().y();
-
-			Point3D stepPoint = new Point3D(x, y);
-			stepsList.add(stepPoint);
-
-		} 
-		return stepsList;
-	}
-
-	public static void main(String[] args){
+	public static void main(String[] args) {
 
 		MyFrame window = new MyFrame();
 		window.setVisible(true);
 		window.setSize(1000, 550);
 		//window.setSize(window.map.getMap().getWidth(),window.map.getMap().getHeight());
+		
+		//new SQLTable();
 	}
 
 

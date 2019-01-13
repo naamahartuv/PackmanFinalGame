@@ -17,6 +17,7 @@ public class Fruit {
 	private double weight;
 
 	
+	
 	/**
 	 * constructor
 	 * @param point - the point
@@ -60,6 +61,7 @@ public class Fruit {
 	public FruitMetaData getFruitData() {
 		return data;
 	}
+
 
 	/**
 	 * getter for point

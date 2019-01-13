@@ -2,6 +2,11 @@ package Algorithms;
 
 import java.util.Comparator;
 
+/**
+ * this class compare the fastestRoad objects by distance
+ * @author yael hava and naama hartuv
+ */
+
 public class DistanceComperator implements Comparator<FastestRoad>{
 
 	@Override
