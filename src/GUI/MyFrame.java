@@ -14,26 +14,22 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.FileDialog;
-
 import javax.swing.KeyStroke;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-
 import Algorithms.RunAlgo;
+import Coords.Map;
 import Coords.MyCoords;
 import File_format.CSV2elements;
-import File_format.CSVWriter;
 import Geom.Point3D;
 import Robot.Play;
 import SQL.SQLTable;
@@ -41,14 +37,11 @@ import TheGame.Block;
 import TheGame.Fruit;
 import TheGame.Game;
 import TheGame.Ghost;
-import TheGame.Map;
 import TheGame.Packman;
 import TheGame.Player;
 import Threads.RoadThread;
 import javafx.scene.shape.Box;
-
 import java.awt.event.ActionListener;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 
@@ -150,11 +143,10 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 	private JMenuBar menuBar;
 	private JMenu fileMenu, typeMenu;
-	private JMenuItem save, load, clear, exit, export, run, player, runAlgo ,sql;
+	private JMenuItem  load, clear, exit,  run, player, runAlgo ,sql;
 	private Game game;
 	private int type;
 	private Map map2 ;
-	private CSVWriter csvWriter;
 	private Play play;
 	private double angle;
 	private DrawFrame draw;
@@ -184,7 +176,6 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		add(draw);
 
 		game = new Game();
-		csvWriter = new CSVWriter(game);
 		menuBar = new JMenuBar();
 
 
@@ -193,19 +184,17 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		sql = new JMenuItem("MySQL");
 		clear = new JMenuItem("Clear");
 		exit = new JMenuItem("Exit");
-		export = new JMenuItem("Export to KML");
+	
 		
 		sql.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,  ActionEvent.CTRL_MASK));
 		load.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,  ActionEvent.CTRL_MASK));
 		clear.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,  ActionEvent.CTRL_MASK));
 		exit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E,  ActionEvent.CTRL_MASK));
-		export.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_K,  ActionEvent.CTRL_MASK));
 
 
 		menuBar.add(fileMenu);
 		fileMenu.add(load);
 		fileMenu.add(sql);
-		fileMenu.add(export);
 		fileMenu.add(clear);
 		fileMenu.add(exit);
 
@@ -338,17 +327,13 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 	public void runAlgoGame() {
 		type = 0;
+		
 		play.setIDs(315745828, 313417420, 123456);
 		play.setInitLocation(game.getPlayer().getPoint().x(), game.getPlayer().getPoint().y());
-
-//RunAlgo algo = new RunAlgo(game);
 		play.start();
-		//while(game.getFruitList().size() != 0) {
-		//algo.run();	
 		
 		RoadThread thread = new RoadThread(play, game, draw);
 		thread.start();
-		//	}
 	}
 
 

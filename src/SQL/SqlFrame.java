@@ -6,11 +6,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class SqlFrame extends JFrame {
+public class SQLFrame extends JFrame {
 	
 	private JTextArea textArea;
 	
-	public SqlFrame() {
+	public SQLFrame() {
 		JPanel panel = new JPanel();
 		add(panel);
 		

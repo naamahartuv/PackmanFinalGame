@@ -11,7 +11,7 @@ public class SQLTable {
 	private ResultSet resultSet;
 
 	public SQLTable() throws ClassNotFoundException, SQLException {
-		SqlFrame frame = new SqlFrame();
+		SQLFrame frame = new SQLFrame();
 		textArea = frame.getTextArea();
 
 		initSql();

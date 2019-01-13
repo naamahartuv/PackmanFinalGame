@@ -3,13 +3,13 @@ package Threads;
 import java.util.ArrayList;
 
 import Algorithms.RunAlgo;
+import Coords.Map;
 import Coords.MyCoords;
 import GUI.MyFrame;
 import GUI.MyFrame.DrawFrame;
 import Geom.Point3D;
 import Robot.Play;
 import TheGame.Game;
-import TheGame.Map;
 
 public class RoadThread extends Thread{
 
@@ -53,7 +53,7 @@ public class RoadThread extends Thread{
 					dis = c.distance3d(playerPoint, roadPoint);
 			
 					try {
-						sleep(12);
+						sleep(40);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
