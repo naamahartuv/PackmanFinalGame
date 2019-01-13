@@ -32,7 +32,7 @@ public class RoadThread extends Thread{
 
 		//		play.setInitLocation(game.getPlayer().getPoint().x(), game.getPlayer().getPoint().y());
 		//		play.start();
-		System.out.println("enter run");
+	
 		
 		
 		while(play.isRuning()) 

@@ -23,7 +23,7 @@ public class RunAlgo {
 	private PriorityQueue<FastestRoad> roadPrio;
 	private ArrayList<Point3D> pointList, road;
 	private ArrayList<Line> lineList;
-	private Fruit fruit;
+//	private Fruit fruit;
 	
 	
 //	public RunAlgo() {
@@ -34,7 +34,7 @@ public class RunAlgo {
 
 		
 		this.game = game;
-		this.fruit = new Fruit();
+	//	this.fruit = new Fruit();
 		if(game.getFruitList().size() != 0)
 		{
 			roadPrio = new PriorityQueue<FastestRoad>(game.getFruitList().size(), new DistanceComperator());
@@ -167,7 +167,7 @@ public class RunAlgo {
 		
 
 		
-		this.fruit = roadPrio.peek().getFruit();
+	//	this.fruit = roadPrio.peek().getFruit();
 		
 		//remove the fruit with the fastest road from the fruit's list
 	//	game.getFruitList().remove(roadPrio.peek().getFruit());
@@ -181,9 +181,9 @@ public class RunAlgo {
 
 
 
-	public Fruit getFruit() {
-		return fruit;
-	}
+//	public Fruit getFruit() {
+//		return fruit;
+//	}
 
 
 

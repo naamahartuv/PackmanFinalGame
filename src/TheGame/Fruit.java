@@ -16,13 +16,6 @@ public class Fruit {
 	private int ID;
 	private double weight;
 
-	/**
-	 * constructor
-	 */
-
-	public Fruit() {
-	}
-	
 	
 	/**
 	 * constructor
@@ -36,9 +29,6 @@ public class Fruit {
 
 	}
 	
-	public boolean isExist(ArrayList<Fruit> fruitList) {
-		return fruitList.contains(this);
-	}
 
 	/**
 	 * constructor

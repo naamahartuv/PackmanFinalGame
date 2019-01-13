@@ -111,9 +111,4 @@ public class Game {
 		return blockList;
 	}
 
-	public boolean isExist(Fruit fruit) {
-		return fruitList.contains(fruit);
-	}
-
-
 }

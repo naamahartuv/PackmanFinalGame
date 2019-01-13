@@ -339,16 +339,8 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		RoadThread thread = new RoadThread(play, game, draw);
 		thread.start();
 		//	}
-		play.stop();
 	}
 
-	/**
-	 * the synchronized between the packman threads
-	 */
-
-	public synchronized void synchronizedPaint() {
-		repaint();
-	}
 
 	/**
 	 * every mouse click
@@ -358,7 +350,6 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 	@Override
 	public void mouseClicked(MouseEvent arg) {
 
-		System.out.println(arg.getX()+", "+arg.getY());
 		if(type == 3) {		
 			Point3D point = new Point3D(map2.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight()));
 			MyCoords c = new MyCoords(0, 0, 0);
