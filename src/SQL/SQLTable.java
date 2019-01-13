@@ -5,11 +5,23 @@ import java.text.DecimalFormat;
 
 import javax.swing.JTextArea;
 
+/**
+ * this class saves the DB of all the game
+ * @author yael hava and naama hartuv
+ *
+ */
+
 public class SQLTable {
 
 	private JTextArea textArea;
 	private ResultSet resultSet;
 
+	/**
+	 * constructor
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	
 	public SQLTable() throws ClassNotFoundException, SQLException {
 		SQLFrame frame = new SQLFrame();
 		textArea = frame.getTextArea();
@@ -18,6 +30,11 @@ public class SQLTable {
 		calcStatisticts();
 	}
 
+	/**
+	 * calculate the average and difference
+	 * @throws SQLException
+	 */
+	
 	private void calcStatisticts() throws SQLException {
 
 		final int firstId = 313417420;
@@ -91,6 +108,11 @@ public class SQLTable {
 		}
 	}
 
+	/**
+	 * brings the table and saves it
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
 	
 	private void initSql() throws ClassNotFoundException, SQLException {
 
@@ -106,6 +128,12 @@ public class SQLTable {
 		resultSet = statement.executeQuery(query);
 	}
 
+	/**
+	 * classified the number of the maps 
+	 * @param map - the map number
+	 * @return - the map current number
+	 */
+	
 	private int getMapNumber(String map) {
 		switch (map) {
 		case "2128259830":

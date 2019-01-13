@@ -17,7 +17,7 @@ import TheGame.PackmanMetaData;
 import TheGame.Player;
 
 /**
- * this class takes a csv file and inserts every line to an packman or fruit object.
+ * this class takes a csv file and inserts every line to an packman, fruit, ghost, block and player object.
  * @author yael hava and naama hartuv
  */
 
@@ -44,6 +44,7 @@ public class CSV2elements
 	 * create an array list with elements and add any element to an array list
 	 * of packmans or fruits
 	 * @param game - the game
+	 * @param play - the server
 	 */
 
 	public void toElem(Game game, Play play) {

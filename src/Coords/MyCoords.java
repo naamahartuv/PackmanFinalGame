@@ -135,7 +135,7 @@ public class MyCoords implements coords_converter{
 	 * prints the coords as a string
 	 */
 	
-	public String toString() {			//לא בטוח שצריך ף עשינו אולי רק בשביל המיין
+	public String toString() {			
 		return "(" + this.x + "," + this.y + "," + this.z + ")";
 	}
 

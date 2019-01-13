@@ -2,16 +2,34 @@ package TheGame;
 
 import Geom.Point3D;
 
+/**
+ * this class represents the player
+ * @author yael hava and naama hartuv
+ */
+
 public class Player {
 
 	private Point3D point;
 	private int score, ID;
 	private double speed, radius;
 	
+	/**
+	 * constructor
+	 * @param point - the point
+	 */
+	
 	public Player(Point3D point) {
 		this.point = point;
 		this.score = 0;
 	}
+	
+	/**
+	 * constructor
+	 * @param point - the point
+	 * @param ID - the id
+	 * @param speed - the speed
+	 * @param radius - the radius
+	 */
 	
 	public Player(Point3D point, int ID, double speed, double radius) {
 		this.score = 0;
@@ -20,6 +38,11 @@ public class Player {
 		this.speed = speed;
 		this.radius = radius;
 	}
+	
+	/**
+	 * constructor
+	 * @param s - the string create the element
+	 */
 
 	public Player(String[] s) {
 		this.score = 0;
@@ -29,6 +52,10 @@ public class Player {
 		radius = Double.parseDouble(s[6]);
 	}
 	
+	/**
+	 * copy constructor
+	 * @param newPlayer - player
+	 */
 	public Player(Player newPlayer) {
 		this.score = 0;
 		this.point = newPlayer.point;

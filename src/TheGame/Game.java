@@ -42,6 +42,10 @@ public class Game {
 		this.packmanList = packmanList;
 	}
 
+	/**
+	 * updates the game to the new board
+	 * @param play - the server
+	 */
 
 	public void update(Play play) {
 		getPackmanList().clear();

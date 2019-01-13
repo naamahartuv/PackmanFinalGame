@@ -15,7 +15,6 @@ public class Packman {
 
 	private PackmanMetaData data;
 	private Point3D point3D;
-	private ArrayList<Fruit> packmanRoad; 
 	private double time = 0;
 	private double radius, moveAbility;
 	private int ID;
@@ -29,9 +28,6 @@ public class Packman {
 	public Packman(Point3D point, PackmanMetaData data) {
 		this.point3D = point;
 		this.data = data;
-		packmanRoad = new ArrayList<Fruit>();
-		Fruit f = new Fruit(point3D);
-		packmanRoad.add(f);
 	}
 	
 	/**
@@ -44,12 +40,9 @@ public class Packman {
 	
 	public Packman(Point3D point, double radius, double moveAbility, int ID) {
 		this.point3D = point;
-		packmanRoad = new ArrayList<Fruit>();
 		this.radius = radius;
 		this.moveAbility = moveAbility;
 		this.ID = ID;
-		Fruit f = new Fruit(point3D);
-		packmanRoad.add(f);
 			}
 	
 	
@@ -61,7 +54,6 @@ public class Packman {
 	public double getMoveAbility() {
 		return moveAbility;
 	}
-
 
 
 	public PackmanMetaData getPackmanData() {
@@ -76,10 +68,6 @@ public class Packman {
 		point3D = point3d;
 	}
 	
-	
-	public ArrayList<Fruit> getPackmanRoad() {
-		return packmanRoad;
-	}
 	
 	public double getTime() {
 		return time;

@@ -34,8 +34,6 @@ public class Map {
 		}
 	}
 
-	public Map() {
-	}
 
 	/**
 	 * calclulates the normal of a point

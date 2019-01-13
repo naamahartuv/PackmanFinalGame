@@ -53,14 +53,22 @@ import java.awt.event.ActionEvent;
 
 public class MyFrame extends JFrame implements MouseListener, MenuListener, ActionListener {
 
-
+	/**
+	 * this class is the panel - consist of all the images and the paint method
+	 * @author yael hava and naama hartuv
+	 *
+	 */
+	
 	public class DrawFrame extends JPanel{
 
 		private BufferedImage strawberry, packmanImage, ghost, playerImage;
-		//	private Map map2;
 
+		/**
+		 * constructor
+		 */
+		
 		public DrawFrame() {
-			map2 = new Map( "Ariel1.png");
+			map = new Map( "Ariel1.png");
 
 			try { 
 				strawberry = ImageIO.read(new File("strawberry.png"));
@@ -80,14 +88,12 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		 */
 
 		public void paint(Graphics g){
-			g.drawImage(map2.getMap(), 0, 0, getWidth(), getHeight(), this);
-
-
+			g.drawImage(map.getMap(), 0, 0, getWidth(), getHeight(), this);
 
 			if(game.getPackmanList() != null)  {
 				for (int i = 0; i < game.getPackmanList().size(); i++) {
 					Packman p = game.getPackmanList().get(i);
-					Point3D temp = map2.GPS2Pixel(p.getPoint3D(), getWidth(), getHeight());
+					Point3D temp = map.GPS2Pixel(p.getPoint3D(), getWidth(), getHeight());
 
 					g.drawImage(packmanImage,(int)temp.x(), (int)temp.y(), 25, 30, this);
 
@@ -97,7 +103,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			if(game.getFruitList() != null) {
 				for (int i = 0; i < game.getFruitList().size(); i++) {
 					Fruit f = game.getFruitList().get(i);
-					Point3D temp = map2.GPS2Pixel(f.getPoint3D(), getWidth(), getHeight());
+					Point3D temp = map.GPS2Pixel(f.getPoint3D(), getWidth(), getHeight());
 
 					g.drawImage(strawberry,(int)temp.x(), (int)temp.y(), 15, 20, this);
 				} 
@@ -106,7 +112,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			if(game.getGhostList() != null)  {
 				for (int i = 0; i < game.getGhostList().size(); i++) {
 					Ghost gh = game.getGhostList().get(i);
-					Point3D temp = map2.GPS2Pixel(gh.getPoint(), getWidth(), getHeight());
+					Point3D temp = map.GPS2Pixel(gh.getPoint(), getWidth(), getHeight());
 
 					g.drawImage(ghost,(int)temp.x(), (int)temp.y(), 27, 31, this);
 
@@ -114,10 +120,10 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			}
 
 			if(game.getBlockList() != null)  {
-			for (int i = 0; i < game.getBlockList().size(); i++) {
-				Block b = game.getBlockList().get(i);
-					Point3D startTemp = map2.GPS2Pixel(b.getPointStart(), getWidth(), getHeight());
-					Point3D endTemp = map2.GPS2Pixel(b.getPointEnd(), getWidth(), getHeight());
+				for (int i = 0; i < game.getBlockList().size(); i++) {
+					Block b = game.getBlockList().get(i);
+					Point3D startTemp = map.GPS2Pixel(b.getPointStart(), getWidth(), getHeight());
+					Point3D endTemp = map.GPS2Pixel(b.getPointEnd(), getWidth(), getHeight());
 					int width = (int)(endTemp.x() - startTemp.x());
 					int height = (int)(startTemp.y() - endTemp.y());
 					g.fillRect((int)startTemp.x(), (int)endTemp.y(), width, height);
@@ -127,7 +133,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 			if(game.getPlayer() != null) {
 				if(game.getPlayer().getPoint().ix() + 1 != 0) {//.................
-					Point3D temp = map2.GPS2Pixel(game.getPlayer().getPoint(), getWidth(), getHeight());
+					Point3D temp = map.GPS2Pixel(game.getPlayer().getPoint(), getWidth(), getHeight());
 					g.drawImage(playerImage, (int)temp.x(), (int)temp.y(), 25, 33, this);
 				}
 			}
@@ -135,18 +141,16 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			if(type == 3) {
 				play.rotate(angle);
 			}
-
-
 		}
 	}
 
 
 	private JMenuBar menuBar;
 	private JMenu fileMenu, typeMenu;
-	private JMenuItem  load, clear, exit,  run, player, runAlgo ,sql;
+	private JMenuItem  load, clear, exit,  run, player, runAlgo , sql;
 	private Game game;
 	private int type;
-	private Map map2 ;
+	private Map map ;
 	private Play play;
 	private double angle;
 	private DrawFrame draw;
@@ -184,8 +188,8 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		sql = new JMenuItem("MySQL");
 		clear = new JMenuItem("Clear");
 		exit = new JMenuItem("Exit");
-	
-		
+
+
 		sql.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,  ActionEvent.CTRL_MASK));
 		load.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,  ActionEvent.CTRL_MASK));
 		clear.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C,  ActionEvent.CTRL_MASK));
@@ -211,8 +215,6 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 		typeMenu.add(player);
 		typeMenu.add(run);
 		typeMenu.add(runAlgo);
-
-
 
 
 		player.addActionListener(new ActionListener() {
@@ -260,6 +262,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 				}
 			}
 		});
+		
 		clear.addActionListener(new ActionListener() {
 
 			@Override
@@ -282,16 +285,6 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 			}
 		});
 
-		//		export.addActionListener(new ActionListener() {
-		//
-		//			@Override
-		//			public void actionPerformed(ActionEvent arg0) {
-		//				Path2KML p2k = new Path2KML(game);
-		//				p2k.exportKmlFile();
-		//				p2k.export();
-		//			}
-		//		});
-
 
 		setJMenuBar(menuBar);
 	}
@@ -299,8 +292,7 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 
 	/**
-	 * operates the algorithm 
-	 * @param e - the event
+	 * operates the human game 
 	 */
 
 	public void  runGame() { 
@@ -321,21 +313,24 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 				}
 			}
 		};
+		
 		thread.start();
 	}
 
-
+	/**
+	 * operates the algorithm 
+	 */
+	
 	public void runAlgoGame() {
 		type = 0;
-		
+
 		play.setIDs(315745828, 313417420, 123456);
 		play.setInitLocation(game.getPlayer().getPoint().x(), game.getPlayer().getPoint().y());
 		play.start();
-		
+
 		RoadThread thread = new RoadThread(play, game, draw);
 		thread.start();
 	}
-
 
 	/**
 	 * every mouse click
@@ -346,14 +341,14 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 	public void mouseClicked(MouseEvent arg) {
 
 		if(type == 3) {		
-			Point3D point = new Point3D(map2.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight()));
+			Point3D point = new Point3D(map.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight()));
 			MyCoords c = new MyCoords(0, 0, 0);
 			angle = c.azimuth_elevation_dist( game.getPlayer().getPoint(),point)[0];
 
 		}
 
 		if(type == 4) {
-			Point3D newPoint = map2.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight());
+			Point3D newPoint = map.pixel2GPS(new Point3D(arg.getX(), arg.getY()), getWidth(), getHeight());
 			game.getPlayer().setPoint(newPoint);
 			play.setInitLocation(newPoint.x(), newPoint.y());
 
@@ -427,10 +422,8 @@ public class MyFrame extends JFrame implements MouseListener, MenuListener, Acti
 
 		MyFrame window = new MyFrame();
 		window.setVisible(true);
-		window.setSize(1000, 550);
-		//window.setSize(window.map.getMap().getWidth(),window.map.getMap().getHeight());
-		
-		//new SQLTable();
+		window.setSize(window.map.getMap().getWidth(),window.map.getMap().getHeight());
+
 	}
 
 

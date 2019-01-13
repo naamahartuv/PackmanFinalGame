@@ -15,7 +15,6 @@ public class Fruit {
 	private Point3D point3D;
 	private int ID;
 	private double weight;
-
 	
 	
 	/**

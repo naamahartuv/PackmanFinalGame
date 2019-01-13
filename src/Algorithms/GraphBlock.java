@@ -9,8 +9,8 @@ import TheGame.Block;
 import TheGame.Game;
 
 /**
- * 
- * @author yaelh
+ * this class represents the dots and lines of the blocks on the graph
+ * @author yael hava and naama hartuv
  *
  */
 

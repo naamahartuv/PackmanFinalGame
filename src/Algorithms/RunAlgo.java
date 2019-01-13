@@ -36,7 +36,6 @@ public class RunAlgo {
 	
 	public RunAlgo(Game game) {
 
-		
 		this.game = game;
 		if(game.getFruitList().size() != 0){
 			roadPrio = new PriorityQueue<FastestRoad>(game.getFruitList().size(), new DistanceComperator());
@@ -45,9 +44,11 @@ public class RunAlgo {
 		lineList = new ArrayList<Line>();
 	}
 
+	/**
+	 * runs the algorithm
+	 */
 
-
-	public void algo(){
+	public void run(){
 		Point3D playerPoint = new Point3D(game.getPlayer().getPoint());
 		GraphBlock blocks = new GraphBlock(game, lineList, pointList);
 		blocks.findPoints();
@@ -119,18 +120,14 @@ public class RunAlgo {
 				g.addEdge(player, fruit, c.distance3d(game.getFruitList().get(i).getPoint3D(), playerPoint));
 			}
 
-			Graph_Algo.dijkstra(g, fruit);	//find the fastest road from the fruit to the packman 
+			Graph_Algo.dijkstra(g, fruit);	//find the fastest road from the fruit to the player 
 
 			Node roadNode = g.getNodeByName(player);
 			ArrayList<PointNode> roadNodeList = new ArrayList<PointNode>();
 
 
-
-			for (int j = 0; j < roadNode.getPath().size(); j++)
-{
-				for (int k = 0; k < nodeList.size(); k++) 
-				{
-
+			for (int j = 0; j < roadNode.getPath().size(); j++){
+				for (int k = 0; k < nodeList.size(); k++) {
 					if(roadNode.getPath().get(j).equals(nodeList.get(k).getId()))
 						roadNodeList.add(nodeList.get(k));
 				}
@@ -152,13 +149,13 @@ public class RunAlgo {
 		}
 	}
 
+	/**
+	 * @return the path of the player
+	 */
 
-	public ArrayList<Point3D> getRoad() {
+	public ArrayList<Point3D> getRoad() { 
 		return road;
 	}
 
-
-
-	
 	
 }

@@ -2,6 +2,11 @@ package TheGame;
 
 import Geom.Point3D;
 
+/**
+ * this class represents a block
+ * @author yael hava and naama hartuv
+ */
+
 public class Ghost {
 
 	private Point3D point;
@@ -12,12 +17,25 @@ public class Ghost {
 		this.point = point;
 	}
 
+	/**
+	 * constructor
+	 * @param point - the point
+	 * @param ID - the id
+	 * @param speed - the speed
+	 * @param radius - the radius
+	 */
+	
 	public Ghost(Point3D point, int ID, double speed, double radius) {
 		this.point = point;
 		this.ID = ID;
 		this.speed = speed;
 		this.radius = radius;
 	}
+	
+	/**
+	 * constructor
+	 * @param s - the string create the element
+	 */
 	
 	public Ghost(String[] s) {
 		point = new Point3D(Double.parseDouble(s[2]), Double.parseDouble(s[3]));
